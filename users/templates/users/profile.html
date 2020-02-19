@@ -1,0 +1,22 @@
+{% extends 'feed/_base.html' %} {% load crispy_forms_tags %} {% block body %}
+<div class="content-section">
+  <div class="media">
+    <img
+      class="rounded-circle account-img"
+      src="{{ user.profile.image.url }}"
+    />
+    <div class="media-body">
+      <h2 class="account-heading">{{ user.username }}</h2>
+      <p class="text-secondary">{{ user.email }}</p>
+      <a href="{% url 'editProfile' %}">Edit Profile</a>
+    </div>
+  </div>
+  <section class="up">
+    {% for post in posts %}
+    <section class="up__bg" style="background-image: url('{{ post.image.url }}');">
+    
+    </section>
+    {% endfor %}
+  </section>
+  {% endblock %}
+</div>

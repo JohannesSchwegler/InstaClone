@@ -1,0 +1,50 @@
+{% extends 'feed/_base.html' %} {% block body %} {% for post in posts %}
+{% load static %}
+<article class="post">
+  <nav class="post__nav">
+    <a href="{% url 'user-posts' post.author.username %}" class="post__author">
+      <img
+        class="rounded-circle article-img"
+        src="{{ post.author.profile.image.url }}"
+      />
+      <span>{{ post.author }}</span>
+    </a>
+
+    <a href="" class="post__more">
+      <svg id="Capa_1" enable-background="new 0 0 515.555 515.555" height="512" viewBox="0 0 515.555 515.555" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m496.679 212.208c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138 65.971-25.167 91.138 0"/><path d="m303.347 212.208c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138 65.971-25.167 91.138 0"/><path d="m110.014 212.208c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138 65.971-25.167 91.138 0"/></svg>
+    </a>
+  </nav>
+  <div style="background-image: url('{{ post.image.url }}');" class="post__image"></div>
+
+  <div class="post__body">
+    <section class="post__iconbar">
+      <i class="fa fa-heart"></i>
+      <i class="fa fa-bubble"></i>
+      <i class="fa fa-paper"></i>
+    </section>
+    <section class="post__likes">
+      <span>Gefällt 165 Mal</span>
+    </section>
+    <div class="article-metadata">
+      <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+    </div>
+    <h2>
+      <a class="article-title" href="{% url 'post-detail' post.id %}"
+        >{{ post.title }}</a
+      >
+    </h2>
+    <p class="article-content">{{ post.content }}</p>
+  </div>
+</article>
+{% endfor %}
+
+
+<section class="sidebar"></section>
+
+
+
+
+
+
+
+{% endblock body %}

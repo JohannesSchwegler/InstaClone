@@ -1,0 +1,8 @@
+db.sqlite3
+users/__pycache__
+media
+instaClone/__pycache__
+feed/__pycache__
+feed/migrations
+env
+.vscode

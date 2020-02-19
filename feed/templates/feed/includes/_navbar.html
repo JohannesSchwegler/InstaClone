@@ -1,0 +1,24 @@
+{% if user.is_authenticated %}
+
+<nav class="navbar navbar-expand-lg py-3 navbar-light bg-white shadow-sm">
+  <div class="container d-flex">
+    <a class="navbar-brand instaClone__title " href="/"
+      ><i class="fa fa-instagram"></i> <span>InstaClone</span></a
+    >
+
+    <div class="form-group mx-auto">
+      <input type="text" class="form-control" id="usr" placeholder="Suchen" />
+    </div>
+    <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+      <ul class="navbar-nav w-100">
+        <li class="nav-item ml-auto  nav-user">
+          <a class="text-black nav-link" href="{% url 'profile' %}">Profile</a>
+        </li>
+        <li class="nav-item nav-user">
+          <a class="text-black nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endif %}

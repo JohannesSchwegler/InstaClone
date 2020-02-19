@@ -1,0 +1,32 @@
+{% extends 'feed/_base.html' %} {% load crispy_forms_tags %} {% block body %}
+
+<article class="register d-flex flex-row">
+    <div class="register__images">
+        {% load static %}
+        <img src="{% static 'images/landingpage-image.png' %}"/>
+    </div>
+  <div style="max-width:350px" class="content-section">
+    <h2 class=" instaClone__title">InstaClone</h2>
+    <form method="POST">
+      {% csrf_token %}
+
+      <span
+        >Registriere dich, um die Fotos und Videos deiner Freunde zu sehen.
+      </span>
+      <fieldset class="form-group">
+        {{form|crispy }}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Sign Up</button>
+      </div>
+    </form>
+    <div class="border-top pt-3">
+      <small class="text-muted">
+        Du hast ein Konto?
+        <a class="ml-2" href="{% url 'login' %}">Melde dich an</a>
+      </small>
+    </div>
+  </div>
+</article>
+
+{% endblock %}
