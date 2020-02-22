@@ -1,21 +1,40 @@
 {% extends 'feed/_base.html' %} {% load crispy_forms_tags %} {% block body %}
 <div class="content-section">
-  <div class="media">
-    <img
-      class="rounded-circle account-img"
-      src="{{ user.profile.image.url }}"
-    />
+  <section class="profile">
+    <nav class="profile__nav">
+      <div class="profile__img">
+        <img
+          class="rounded-circle account-img"
+          src="{{ user.profile.image.url }}"
+        />
+      </div>
+
+      <div class="profile__info">
+        <div class="profile__settings">
+          <h1>{{ user.username }}</h1>
+          <a href="{% url 'editProfile' %}">Edit Profile</a>
+          <a href="{% url 'editProfile' %}">Settings</a>
+        </div>
+        <ul class="profile__stats">
+           <li> <span>18</span> Beiträge</li>
+           <li> <span>18</span> Abbonenten</li>
+           <li> <span>18</span> abboniert</li>
+        </ul>
+        <div class="profile__description">{{ user.description }}</div>
+      </div>
+    </nav>
+
     <div class="media-body">
-      <h2 class="account-heading">{{ user.username }}</h2>
-      <p class="text-secondary">{{ user.email }}</p>
-      <a href="{% url 'editProfile' %}">Edit Profile</a>
+   
+   
     </div>
-  </div>
+  </section>
   <section class="up">
     {% for post in posts %}
-    <section class="up__bg" style="background-image: url('{{ post.image.url }}');">
-    
-    </section>
+    <section
+      class="up__bg"
+      style="background-image: url('{{ post.image.url }}');"
+    ></section>
     {% endfor %}
   </section>
   {% endblock %}
