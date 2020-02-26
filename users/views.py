@@ -1,3 +1,4 @@
+from __future__ import print_function
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
@@ -15,23 +16,19 @@ def register(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Your account has been created! You are now able to log in')
+            messages.success(
+                request, f'Your account has been created! You are now able to log in')
             return redirect('login')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
 
-
-
-
 class UserPostListView(ListView):
     model = Post
-    template_name= "users/profile.html"   #<app>/<model>_<viewtype>.html
-    context_object_name="posts"
+    template_name = "users/profile.html"  # <app>/<model>_<viewtype>.html
+    context_object_name = "posts"
 
-
-    
     def get_queryset(self):
         user = get_object_or_404(User, username=self.request.user)
         return Post.objects.filter(author=user).order_by('-date_posted')
@@ -62,10 +59,6 @@ def editProfile(request):
     return render(request, 'users/editProfile.html', context)
 
 
-
 @login_required
 def shoppingCart(request):
-    return render(request, 'users/shopping-cart.html')    
-
-
-    
+    return render(request, 'users/shopping-cart.html')

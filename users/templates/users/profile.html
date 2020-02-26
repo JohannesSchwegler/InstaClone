@@ -16,25 +16,28 @@
           <a href="{% url 'editProfile' %}">Settings</a>
         </div>
         <ul class="profile__stats">
-           <li> <span>18</span> Beiträge</li>
-           <li> <span>18</span> Abbonenten</li>
-           <li> <span>18</span> abboniert</li>
+          <li><span>18</span> Beiträge</li>
+          <li><span>18</span> Abbonenten</li>
+          <li><span>18</span> abboniert</li>
         </ul>
         <div class="profile__description">{{ user.description }}</div>
       </div>
     </nav>
 
-    <div class="media-body">
-   
-   
-    </div>
+    <div class="media-body"></div>
   </section>
   <section class="up">
     {% for post in posts %}
-    <section
-      class="up__bg"
+
+    <a
+      href="{% url 'post-detail' post.id %}"
+      class="up__bg d-flex align-items-center justify-content-center"
       style="background-image: url('{{ post.image.url }}');"
-    ></section>
+    >
+      <div class="up__info text-white">
+        <p>{{ post.likes.all.count}}</p>
+      </div>
+    </a>
     {% endfor %}
   </section>
   {% endblock %}
