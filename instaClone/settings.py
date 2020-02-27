@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'feed.apps.FeedConfig',
-    'crispy_forms'
+    'crispy_forms',
+    'django_filters',
+    'optimized_image',
+
 ]
 
 MIDDLEWARE = [
@@ -80,7 +83,7 @@ WSGI_APPLICATION = 'instaClone.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "InstaClone",
+        'NAME': "InstagramDB",
         "USER": "postgres",
         "PASSWORD": "postgres",
         "HOST": "localhost"
@@ -143,3 +146,7 @@ LOGIN_URL = 'login'
 
 AUTH_EXEMPT_ROUTES = ('register', 'login', 'forgot-password')
 AUTH_LOGIN_ROUTE = 'register'
+OPTIMIZED_IMAGE_IGNORE_EXTENSIONS = ['GIF']
+# To use Pillow
+OPTIMIZED_IMAGE_METHOD = 'pillow'
+#

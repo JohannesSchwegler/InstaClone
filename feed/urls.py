@@ -9,7 +9,8 @@ from .views import (
     addComment,
     addLike,
     addFollower,
-    getFollowers
+    getFollowers,
+    search
 )
 
 urlpatterns = [
@@ -23,5 +24,6 @@ urlpatterns = [
     path('add-like/', addLike, name='add-like'),
     path('add-follower/', addFollower, name='add-follower'),
     path('get-followers/', getFollowers, name='get-followers'),
+    path('search/', search, name='search'),
 
 ]

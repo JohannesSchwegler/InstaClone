@@ -31,9 +31,10 @@
     </a>
   </nav>
   <div
-    style="background-image: url('{{ post.image.url }}');"
     class="post__image"
-  ></div>
+  >
+<img src="{{ post.image.url }}" alt="img">
+</div>
 
   <div class="post__body">
     <section class="post__iconbar">
@@ -106,14 +107,19 @@
     </h2>
     <div class="post__comments">
       <a href="{% url 'post-detail' post.id %}">See all comments</a>
+      {% if post.comments.all.count != 0 %}
+    
       <p>
         <span>{{post.comments.all.0.user}}:</span
         ><span>{{post.comments.all.0.content}}</span>
       </p>
+        {% if post.comments.all.count >= 2 %}
       <p>
         <span>{{post.comments.all.1.user}}:</span
         ><span>{{post.comments.all.1.content}}</span>
       </p>
+         {% endif %}
+      {% endif %}
     </div>
   </div>
   <nav class="post__nav post__comment">

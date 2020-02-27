@@ -172,3 +172,20 @@ def getFollowers(request):
 
         print(listAll)
         return JsonResponse({"list": listAll})
+
+
+@csrf_exempt
+def search(request):
+    if request.method == 'POST':
+        do_something()
+
+    elif request.method == 'GET':
+        input = request.GET.dict()["inputVal"]
+        users = User.objects.filter(username__contains=input)
+
+        listAll = []
+        for user in users:
+            listAll.append({"username": user.username, "userId": user.id,
+                            "userimage": user.profile.image.url})
+
+        return JsonResponse({"list": listAll})

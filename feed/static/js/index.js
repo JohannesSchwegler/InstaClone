@@ -91,15 +91,116 @@ window.addEventListener("load", () => {
 
   $(".profile__follower").on("click", function() {
     var userId = $(this).data().userId;
-    console.log(userId);
+    $("#myModal").modal("show");
+
     $.ajax({
       type: "GET",
       url: "/get-followers/",
       contentType: "application/json",
       data: { userId: userId },
       success: response => {
-        console.log(response.list[0]);
+        console.log(response.list);
+        var body = $("#myModal").find(".modal-body");
+        body.html("");
+        response.list.forEach(item => {
+          let container = $(`<div class="modal__user"></div`);
+          let user = $(`<p>${item.username}</p>`);
+          let image = $(`<img src="${item.userimage}" alt=""/>`);
+          let follow = $(
+            `<button class="btn btn-primary" data-user-id="${item.userId}">Follow</button>`
+          );
+          container.append(image, user, follow);
+          body.append(container);
+        });
       }
     });
   });
+
+  $(".up a").on("click", function(e) {
+    //var userId = $(this);
+    e.preventDefault();
+
+    let body = $("#myModal").find(".modal-body");
+    let url = $(this).attr("href");
+
+    console.log(body);
+
+    body.load(url + " #post");
+    window.history.pushState("page2", "Title", url);
+    let data = $("#myModal").modal("show");
+    /*
+   $.ajax({
+     type: "GET",
+     url: "/get-followers/",
+     contentType: "application/json",
+     data: { userId: userId },
+     success: response => {
+       console.log(response.list);
+       var body = $("#myModal").find(".modal-body");
+       body.html("");
+       response.list.forEach(item => {
+         let container = $(`<div class="modal__user"></div`);
+         let user = $(`<p>${item.username}</p>`);
+         let image = $(`<img src="${item.userimage}" alt=""/>`);
+         let follow = $(
+           `<button class="btn btn-primary" data-user-id="${item.userId}">Follow</button>`
+         );
+         container.append(image, user, follow);
+         body.append(container);
+       });
+     }
+   });*/
+  });
+  handleSearch();
 });
+
+function handleSearch() {
+  let input = $(".search");
+  let searchBar = $(".search__container");
+  let isOpen = false;
+  input.on("input", function() {
+    let container = $(".search__container").html("");
+    let inputVal = input.val();
+    if (inputVal === "") {
+      return;
+    }
+
+    $.ajax({
+      type: "GET",
+      url: "/search/",
+      contentType: "application/json",
+      data: { inputVal },
+      success: response => {
+        response.list.forEach(item => {
+          let itemContainer = $(
+            `<a href="/user/${item.username}" class="search__item"></a>`
+          );
+          let innerContainer = $(`<div class="search__inner"></div>`);
+          let user = $(`<p>${item.username}</p>`);
+          let image = $(`<img src="${item.userimage}" alt=""/>`);
+
+          container.append(
+            itemContainer.append(innerContainer.append(image, user))
+          );
+          searchBar.css("display", "block");
+          isOpen = true;
+
+          console.log(item);
+        });
+      }
+    });
+  });
+
+  input.on("click", function() {
+    console.log("test");
+    searchBar.css("display", "block");
+    isOpen = true;
+  });
+
+  $(".container.my-5").on("click", function() {
+    console.log("container");
+    if (isOpen) {
+      searchBar.css("display", "none");
+    }
+  });
+}
