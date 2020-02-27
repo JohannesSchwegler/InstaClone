@@ -24,16 +24,6 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
-class UserPostListView(ListView):
-    model = Post
-    template_name = "users/profile.html"  # <app>/<model>_<viewtype>.html
-    context_object_name = "posts"
-
-    def get_queryset(self):
-        user = get_object_or_404(User, username=self.request.user)
-        return Post.objects.filter(author=user).order_by('-date_posted')
-
-
 @login_required
 def editProfile(request):
     if request.method == 'POST':

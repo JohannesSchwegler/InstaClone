@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     {% load static %}
     <script src="{% static 'js/index.js' %}"></script>
-  
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-</head>
-<body>
- 
-    {% include './includes/_navbar.html' %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/style.css' %}"
+    />
 
-    {% if messages %}
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    {% include './includes/_navbar.html' %} {% if messages %}
+    <h1>Test</h1>
     {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-      </div>
-    {% endfor %}
-    {% endif %}
-    <div class="container my-5">
-
-        {% block body %}
-      
-
-    {% endblock body %}
+    <div class="alert alert-{{ message.tags }}">
+      {{ message }}
     </div>
-    
+    {% endfor %} {% endif %}
+
+    <div class="container my-5">
+      {% block body %} {% endblock body %}
+    </div>
+
     <nav class="menu">
       <a href="/">
         <i class="fa fa-home"></i>
@@ -44,13 +50,12 @@
       <a href="">
         <i class="fa fa-heart"></i>
       </a>
-      <a href="/profile/">
+      <a href="{% url 'user-posts' user.username %}">
         <i class="fa fa-user"></i>
       </a>
     </nav>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
- 
-</body>
+  </body>
 </html>

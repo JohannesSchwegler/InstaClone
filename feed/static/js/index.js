@@ -76,4 +76,30 @@ window.addEventListener("load", () => {
 
     $(".post__likes span").html(parseInt(current) + value);
   }
+
+  $(".profile__follow").on("click", function() {
+    userId = $(this).data().userId;
+    $.ajax({
+      type: "POST",
+      url: "/add-follower/",
+      data: JSON.stringify({ userId }),
+      success: message => {
+        console.log("erfolgreich");
+      }
+    });
+  });
+
+  $(".profile__follower").on("click", function() {
+    var userId = $(this).data().userId;
+    console.log(userId);
+    $.ajax({
+      type: "GET",
+      url: "/get-followers/",
+      contentType: "application/json",
+      data: { userId: userId },
+      success: response => {
+        console.log(response.list[0]);
+      }
+    });
+  });
 });

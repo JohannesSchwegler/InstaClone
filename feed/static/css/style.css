@@ -339,6 +339,10 @@ body {
   font-weight: 400;
 }
 
+.profile__follower, .profile__followed {
+  cursor: pointer;
+}
+
 .profile__stats {
   list-style-type: none;
   display: -webkit-box;

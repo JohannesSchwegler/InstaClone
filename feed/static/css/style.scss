@@ -275,6 +275,11 @@ body {
     }
   }
 
+  &__follower,
+  &__followed {
+    cursor: pointer;
+  }
+
   &__stats {
     list-style-type: none;
     display: flex;

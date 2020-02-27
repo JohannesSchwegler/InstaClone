@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-     'users.apps.UsersConfig',
+    'users.apps.UsersConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'feed.middleware.LoginRequiredMiddleware'
 ]
 
 ROOT_URLCONF = 'instaClone.urls'
@@ -81,9 +82,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': "InstaClone",
         "USER": "postgres",
-        "PASSWORD":"postgres",
-        "HOST":"localhost"
-       
+        "PASSWORD": "postgres",
+        "HOST": "localhost"
+
     }
 }
 
@@ -126,15 +127,19 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'orders/static'),] # files in local development
+# files in local development
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'orders/static'), ]
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
+
+
+AUTH_EXEMPT_ROUTES = ('register', 'login', 'forgot-password')
+AUTH_LOGIN_ROUTE = 'register'
