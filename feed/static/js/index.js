@@ -104,7 +104,7 @@ window.addEventListener("load", () => {
         body.html("");
         response.list.forEach(item => {
           let container = $(`<div class="modal__user"></div`);
-          let user = $(`<p>${item.username}</p>`);
+          let user = $(`<a href="/user/${item.username}">${item.username}</a>`);
           let image = $(`<img src="${item.userimage}" alt=""/>`);
           let follow = $(
             `<button class="btn btn-primary" data-user-id="${item.userId}">Follow</button>`
