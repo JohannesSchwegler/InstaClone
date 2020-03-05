@@ -15,10 +15,10 @@ class LoginRequiredMiddleware(MiddlewareMixin):
         assert hasattr(request, 'user'), """
         The Login Required middleware needs to be after AuthenticationMiddleware.
         Also make sure to include the template context_processor:
-        'django.contrib.auth.context_processors.auth'."""
+        'django.contrib.auth.context_processors.auth'. """
 
-        if not request.user.is_authenticated:
-            current_route_name = resolve(request.path_info).url_name
-
-            if not current_route_name in settings.AUTH_EXEMPT_ROUTES:
-                return HttpResponseRedirect(reverse(settings.AUTH_LOGIN_ROUTE))
+        if request.method == 'GET':
+            if not request.user.is_authenticated:
+                current_route_name = resolve(request.path_info).url_name
+                if not current_route_name in settings.AUTH_EXEMPT_ROUTES:
+                    return HttpResponseRedirect(reverse(settings.AUTH_LOGIN_ROUTE))

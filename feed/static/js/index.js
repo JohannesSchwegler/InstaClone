@@ -84,13 +84,26 @@ window.addEventListener("load", () => {
       url: "/add-follower/",
       data: JSON.stringify({ userId }),
       success: message => {
-        console.log("erfolgreich");
+        location.reload();
+      }
+    });
+  });
+
+  $(".profile__unfollow").on("click", function() {
+    userId = $(this).data().userId;
+    $.ajax({
+      type: "POST",
+      url: "/remove-follower/",
+      data: JSON.stringify({ userId }),
+      success: message => {
+        location.reload();
       }
     });
   });
 
   $(".profile__follower").on("click", function() {
     var userId = $(this).data().userId;
+    console.log(userId);
     $("#myModal").modal("show");
 
     $.ajax({
@@ -103,6 +116,36 @@ window.addEventListener("load", () => {
         var body = $("#myModal").find(".modal-body");
         body.html("");
         response.list.forEach(item => {
+          $(".modal-title").text("Followers");
+          let container = $(`<div class="modal__user"></div`);
+          let user = $(`<a href="/user/${item.username}">${item.username}</a>`);
+          let image = $(`<img src="${item.userimage}" alt=""/>`);
+          let follow = $(
+            `<button class="btn btn-primary" data-user-id="${item.userId}">Follow</button>`
+          );
+          container.append(image, user, follow);
+          body.append(container);
+        });
+      }
+    });
+  });
+
+  $(".profile__followed").on("click", function() {
+    var userId = $(this).data().userId;
+    console.log(userId);
+    $("#myModal").modal("show");
+
+    $.ajax({
+      type: "GET",
+      url: "/get-subscribed/",
+      contentType: "application/json",
+      data: { userId: userId },
+      success: response => {
+        console.log(response.list);
+        var body = $("#myModal").find(".modal-body");
+        body.html("");
+        response.list.forEach(item => {
+          $(".modal-title").text("Subscribed to");
           let container = $(`<div class="modal__user"></div`);
           let user = $(`<a href="/user/${item.username}">${item.username}</a>`);
           let image = $(`<img src="${item.userimage}" alt=""/>`);
@@ -202,5 +245,25 @@ function handleSearch() {
     if (isOpen) {
       searchBar.css("display", "none");
     }
+  });
+
+  // this is the id of the form
+  $(".chatbot-submit").submit(function(e) {
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+
+    var form = $(this);
+
+    var comment = $(this)
+      .find("input")
+      .val();
+
+    $.ajax({
+      type: "POST",
+      url: "https://bot.dialogflow.com/f5e7b6a0-d78a-4bee-805f-feccfac2ec2c",
+      data: JSON.stringify({ comment }),
+      success: function(data) {
+        console.log("chatbot");
+      }
+    });
   });
 }

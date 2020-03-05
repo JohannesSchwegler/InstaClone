@@ -12,6 +12,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
+from itertools import chain
 from .models import Post, Comment, Like
 from users.models import Follower
 from django.http import JsonResponse
@@ -23,6 +24,22 @@ class PostListView(ListView):
     template_name = "feed/index.html"  # <app>/<model>_<viewtype>.html
     context_object_name = "posts"
     ordering = ["-date_posted"]  # "date_posted" for oldest to newest
+
+    def get_queryset(self):
+        current_user = self.request.user.id
+
+        followed = Follower.objects.filter(user_id=current_user)
+
+        listAll = []
+        for i in followed:
+            print(Post.objects.filter(author_id=i.folgt).all())
+            listAll.append(Post.objects.filter(author_id=i.folgt).all())
+
+        posts = list(chain(*listAll))
+        print(posts)
+        if len(posts) == 0:
+            print("leer")
+        return posts
 
 
 class UserPostListView(ListView):
@@ -36,11 +53,13 @@ class UserPostListView(ListView):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         current_user = self.request.user.id
         follower = Follower.objects.filter(
-            user_id=current_user, follower_id=user.id).exists()
+            user_id=current_user, folgt_id=user.id).exists()
 
         postCount = Post.objects.filter(author=user.id).count()
-        followed = Follower.objects.filter(follower_id=user.id).count()
+        followed = Follower.objects.filter(folgt_id=user.id).count()
 
+        context['abboniert'] = Follower.objects.filter(
+            user_id=user.id).count()
         context['followed'] = followed
         context['postCount'] = postCount
         context['is_ownProfil'] = (user.id == current_user)
@@ -145,14 +164,36 @@ def addFollower(request):
 
         current_user = request.user.id
         userId = json.loads(request.body)["userId"]
+        print(userId)
         try:
-            Follower.objects.create(follower_id=userId, user_id=current_user)
+            Follower.objects.create(folgt_id=userId, user_id=current_user)
 
         except IntegrityError as e:
             print("geht net")
 
         print(userId)
-        return JsonResponse({"user": request.user.username, "like": "remove"})
+        return render(request, 'users/profile.html')
+
+
+@csrf_exempt
+def removeFollower(request):
+    if request.method == 'GET':
+        do_something()
+
+    elif request.method == 'POST':
+
+        current_user = request.user.id
+        userId = json.loads(request.body)["userId"]
+        print(userId)
+        try:
+            Follower.objects.filter(
+                folgt_id=userId, user_id=current_user).delete()
+
+        except IntegrityError as e:
+            print("geht net")
+
+        print(userId)
+        return render(request, 'users/profile.html')
 
 
 @csrf_exempt
@@ -162,13 +203,35 @@ def getFollowers(request):
 
     elif request.method == 'GET':
         userId = request.GET.dict()["userId"]
-        followed = Follower.objects.filter(follower_id=userId)
+        current_user = request.user.id
+        followed = Follower.objects.filter(folgt_id=current_user)
         print(followed)
         listAll = []
         for i in followed:
 
             listAll.append(({"userimage": i.user.profile.image.url, "username": i.user.username,
                              "description": i.user.profile.description, "userId": i.user.id}))
+
+        print(listAll)
+        return JsonResponse({"list": listAll})
+
+
+@csrf_exempt
+def getSubscribed(request):
+    if request.method == 'POST':
+        do_something()
+
+    elif request.method == 'GET':
+        userId = request.GET.dict()["userId"]
+        # current_user = request.user.id
+        print(userId)
+        followed = Follower.objects.filter(user_id=userId)
+        print(followed)
+        listAll = []
+        for i in followed:
+
+            listAll.append(({"userimage": i.folgt.profile.image.url, "username": i.folgt.username,
+                             "description": i.folgt.profile.description, "userId": i.folgt.id}))
 
         print(listAll)
         return JsonResponse({"list": listAll})
@@ -189,3 +252,17 @@ def search(request):
                             "userimage": user.profile.image.url})
 
         return JsonResponse({"list": listAll})
+
+
+@csrf_exempt
+def webhook(request):
+    # build a request object
+    req = json.loads(request.body)
+    print(req["queryResult"])
+    # get action from json
+    action = req.get('queryResult').get('action')
+    # return a fulfillment message
+    fulfillmentText = {
+        'fulfillmentText': 'This is Django test response from webhook.'}
+    # return response
+    return JsonResponse(fulfillmentText, safe=False)

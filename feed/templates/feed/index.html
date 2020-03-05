@@ -138,8 +138,13 @@
     </form>
   </nav>
 </article>
+
 {% endfor %}
+{% if posts|length == 0 %}
+<h1>Please subscribe to users to see a feed</h1>
+{% endif %}
 
 <section class="sidebar"></section>
+
 
 {% endblock body %}

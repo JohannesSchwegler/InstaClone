@@ -10,7 +10,10 @@ from .views import (
     addLike,
     addFollower,
     getFollowers,
-    search
+    removeFollower,
+    search,
+    getSubscribed,
+    webhook
 )
 
 urlpatterns = [
@@ -23,7 +26,10 @@ urlpatterns = [
     path('add-comment/', addComment, name='add-comment'),
     path('add-like/', addLike, name='add-like'),
     path('add-follower/', addFollower, name='add-follower'),
+    path('remove-follower/', removeFollower, name='remove-follower'),
     path('get-followers/', getFollowers, name='get-followers'),
+    path('get-subscribed/', getSubscribed, name='get-subscribed'),
     path('search/', search, name='search'),
+    path('webhook/', webhook, name='webhook'),
 
 ]

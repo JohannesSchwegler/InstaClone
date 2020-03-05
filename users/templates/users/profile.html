@@ -17,26 +17,27 @@
           <a href="{% url 'editProfile' %}">Settings</a>
           <a class="text-black nav-link" href="{% url 'logout' %}">Logout</a>
 
-          {% else %} {% if is_Follower %}
-          <p data-user-id="{{user.id}}" class="profile__unfollow">Unfollow</p>
+          {% else %} {% if is_follower %}
+          <p data-user-id="{{userProfile.id}}" class="profile__unfollow">
+            Unfollow
+          </p>
           {% else %}
-          <p data-user-id="{{user.id}}" class="profile__follow">Follow</p>
+          <p data-user-id="{{userProfile.id}}" class="profile__follow">
+            Follow
+          </p>
           {% endif %} {% endif %}
         </div>
         <ul class="profile__stats">
           <li><span>{{ postCount }}</span> Beiträge</li>
 
           <li class="profile__follower" data-user-id="{{ userProfile.id }}">
-            <span>{{userProfile.followers.all.count }}</span> Abbonenten
+            <span>{{userProfile.folgt.all.count }}</span> Abbonenten
           </li>
-          <li class="profile__followed">
-            <span>{{ followed }}</span> abboniert
+          <li class="profile__followed" data-user-id="{{ userProfile.id }}">
+            <span>{{ abboniert}}</span> abboniert
           </li>
         </ul>
         <div class="profile__description">{{ userProfile.description }}</div>
-        {% if is_follower %}
-        <h1>Already follower</h1>
-        {% endif %}
       </div>
     </nav>
 
@@ -63,7 +64,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Followers</h5>
+          <h5 class="modal-title">folgt</h5>
           <button
             type="button"
             class="close"
